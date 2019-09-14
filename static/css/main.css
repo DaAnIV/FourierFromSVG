@@ -1,0 +1,63 @@
+.slidecontainer {
+  display: inline-block;
+  width: 93%; /* Width of the outside container */
+  margin: 1em;
+}
+
+/* Mouse-over effects */
+.slider:hover {
+  opacity: 1; /* Fully shown on mouse-over */
+}
+
+/* This rule causes the label to vertically align properly */
+.circles-count-div label {
+    vertical-align: middle;
+    display: inline-block;
+}
+
+/* This rule causes the label to vertically align properly */
+.range-output label {
+    vertical-align: middle;
+    display: inline-block;
+}
+
+.range-output output {
+    vertical-align: middle;
+    display: inline-block;
+    margin-bottom: 1em;
+}
+
+.slider {
+  -webkit-appearance: none;
+  height: 15px;
+  border-radius: 5px;
+  background: #d3d3d3;
+  outline: none;
+  opacity: 0.7;
+  -webkit-transition: .2s;
+  transition: opacity .2s;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background: #4CAF50;
+  cursor: pointer;
+}
+
+.slider::-moz-range-thumb {
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background: #4CAF50;
+  cursor: pointer;
+}
+
+.auto-plot-label {
+    vertical-align: middle;
+    display: inline-block;
+    margin-left: 1em;
+}

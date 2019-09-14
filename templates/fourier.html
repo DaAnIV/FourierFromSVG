@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+{% block title %}
+Fourier
+{% endblock %}
+{% block content %}
+<div class="container">
+    <div class="jumbotron">
+        <h1>Fourier</h1>
+    </div>
+    <form class="card p-2" enctype="multipart/form-data" id=svg_form method=post oninput="number_of_circles_output.value = number_of_circles.valueAsNumber">
+        {{ form.svg_file(id="svg_file", accept=".svg", type="file", class="form-control",
+        placeholder=form.svg_file.label.text) }}
+        <div class="range-output">
+            {{ form.number_of_circles.label }}
+            <label>: </label>
+            <output class="output" name="number_of_circles_output" for="number_of_circles">101</output>
+        </div>
+        <div class="circles-count-div">
+            <label>10</label>
+            <div class="slidecontainer">
+                {{ form.number_of_circles(id="number_of_circles", type="range", min="10", max="300", value="101",
+                class="slider") }}
+            </div>
+            <label>300</label>
+        </div>
+        {{ form.submit(class="btn btn-secondary") }}
+        <label class="auto-plot-label">  auto plot:</label>
+        <input id="auto_plot" type="checkbox">
+        {{ form.hidden_tag() }}
+    </form>
+    <canvas id="fourier_canvas"></canvas>
+</div>
+{% endblock %}
+{% block scripts %}
+{{ super() }}
+
+<script src="{{ url_for('static', filename='js/fourier.js') }}" type="text/javascript"></script>
+<script>
+    $(function () {
+        $('#svg_form').submit(function () {
+            let canvas = document.getElementById("fourier_canvas");
+            let url = "{{ url_for('fourier.get_fourier_constants_post') }}";
+            let formData = new FormData($(this)[0]);
+            let file = $("#svg_file")[0].files[0];
+            formData.append("file", file, file.name);
+            formData.append("canvas_width", canvas.width);
+            formData.append("canvas_height", canvas.height);
+            $.ajax({
+                url: url,
+                data: formData,
+                cache: false,
+                contentType: false,
+                processData: false,
+                type: 'PUT',
+                success: function (data) {
+                    init_fourier(canvas, data, $('#number_of_circles')[0].value);
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+            return false;
+        });
+        $('#number_of_circles').change(function () {
+            if($("#auto_plot")[0].checked && $("#svg_file")[0].value !== "")
+                $('#svg_form').submit()
+        });
+
+        // Inject our CSRF token into our AJAX request.
+        $.ajaxSetup({
+            beforeSend: function (xhr, settings) {
+                if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type) && !this.crossDomain) {
+                    xhr.setRequestHeader("X-CSRFToken", "{{ form.csrf_token._value() }}")
+                }
+            }
+        });
+
+        fitToContainer(document.getElementById("fourier_canvas"));
+    });
+
+    function fitToContainer(canvas) {
+        // Make it visually fill the positioned parent
+        canvas.style.width = '100%';
+        canvas.style.height = '1000px';
+        // ...then set the internal size to match
+        canvas.width = canvas.offsetWidth;
+        canvas.height = canvas.offsetHeight;
+    }
+
+</script>
+{% endblock %}

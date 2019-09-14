@@ -1,0 +1,8 @@
+Flask
+flask-appconfig
+Flask-Bootstrap
+Flask-WTF
+matplotlib
+numpy
+scipy
+svgpathtools

@@ -25,7 +25,7 @@ const FourierCircle = class {
     draw(ctx, at) 
     {
         ctx.beginPath();
-        // ctx.arc(at.x, at.y, this.radius, 0, Math.PI * 2, true);
+        //ctx.arc(at.x, at.y, this.radius, 0, Math.PI * 2, true);
         var x = at.x + this.radius * Math.cos(this.initial_angle + 2 * Math.PI * time * this.speed);
         var y = at.y + this.radius * Math.sin(this.initial_angle + 2 * Math.PI * time * this.speed);
         ctx.moveTo(at.x, at.y);
@@ -77,6 +77,7 @@ function draw_wave(ctx) {
         let alpha = 1 - i*1.0/wave.length;
         
         ctx.strokeStyle = 'rgba(0, 0, 0, ' + alpha + ')';
+        //ctx.strokeStyle = 'rgba(0, 0, 0, 1)';
         ctx.lineWidth = 1;
         ctx.stroke();
     }

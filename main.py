@@ -35,4 +35,4 @@ for extra_dir in extra_dirs:
                 extra_files.append(filename)
 
 if __name__ == '__main__':
-    app.run(debug=True, extra_files=extra_files)
+    app.run(host= '0.0.0.0',debug=True, extra_files=extra_files)

@@ -16,16 +16,19 @@ const Point = class {
 };
 
 const FourierCircle = class {
-    constructor(speed, radius, initial_angle)
+    constructor(speed, radius, initial_angle, draw_circles)
     {
         this.radius = radius/2;
         this.speed = speed/20;
         this.initial_angle = initial_angle
+        this.draw_circles = draw_circles
     }
     draw(ctx, at) 
     {
         ctx.beginPath();
-        //ctx.arc(at.x, at.y, this.radius, 0, Math.PI * 2, true);
+        if(this.draw_circles) {
+            ctx.arc(at.x, at.y, this.radius, 0, Math.PI * 2, true);
+        }
         var x = at.x + this.radius * Math.cos(this.initial_angle + 2 * Math.PI * time * this.speed);
         var y = at.y + this.radius * Math.sin(this.initial_angle + 2 * Math.PI * time * this.speed);
         ctx.moveTo(at.x, at.y);
@@ -50,7 +53,7 @@ let animation_id = 0;
 let center = new Point(150, 150);
 let wave = [];
 
-function init_fourier(canvas_elm, constants, count) {
+function init_fourier(canvas_elm, constants, count, draw_circles) {
     canvas = canvas_elm;
     context = canvas.getContext('2d');
     if(animation_id !== 0)
@@ -60,7 +63,7 @@ function init_fourier(canvas_elm, constants, count) {
     wave = [];
     for (let i = 0; i < count; i++) {
         let constant = constants[i];
-        circles[i] = new FourierCircle(constant.s, constant.r, constant.a);
+        circles[i] = new FourierCircle(constant.s, constant.r, constant.a, draw_circles);
     }
     animation_id = window.requestAnimationFrame(draw);
 }

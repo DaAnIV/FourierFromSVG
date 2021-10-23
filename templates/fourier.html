@@ -16,16 +16,21 @@ Fourier
             <output class="output" name="number_of_circles_output" for="number_of_circles">101</output>
         </div>
         <div class="circles-count-div">
-            <label>1</label>
+            <label>0</label>
             <div class="slidecontainer">
-                {{ form.number_of_circles(id="number_of_circles", type="range", min="1", max="300", value="101",
+                {{ form.number_of_circles(id="number_of_circles", type="range", min="0", max="300", value="101",
                 class="slider") }}
             </div>
             <label>300</label>
         </div>
-        {{ form.submit(class="btn btn-secondary") }}
-        <label class="auto-plot-label">  auto plot:</label>
-        <input id="auto_plot" type="checkbox">
+        <div class="container" style="display: inline-block;">   
+            {{ form.submit(class="btn btn-secondary") }}
+            <label class="auto-plot-label" style="margin-left: 1em;">auto plot:</label>
+            <input id="auto_plot" type="checkbox">
+            <label class="draw-circles-label" style="margin-left: 1em;">draw circles:</label>
+            <input id="draw_circles" type="checkbox">
+        </div>
+     
         {{ form.hidden_tag() }}
     </form>
     <canvas id="fourier_canvas"></canvas>
@@ -53,7 +58,7 @@ Fourier
                 processData: false,
                 type: 'PUT',
                 success: function (data) {
-                    init_fourier(canvas, data, $('#number_of_circles')[0].value);
+                    init_fourier(canvas, data, $('#number_of_circles')[0].value, $('#draw_circles')[0].checked);
                 },
                 error: function (error) {
                     console.log(error);
@@ -62,6 +67,11 @@ Fourier
             return false;
         });
         $('#number_of_circles').change(function () {
+            if($("#auto_plot")[0].checked && $("#svg_file")[0].value !== "")
+                $('#svg_form').submit()
+        });
+
+        $('#draw_circles').change(function () {
             if($("#auto_plot")[0].checked && $("#svg_file")[0].value !== "")
                 $('#svg_form').submit()
         });

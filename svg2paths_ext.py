@@ -6,7 +6,7 @@ from shutil import copyfile
 
 # Internal dependencies
 from svgpathtools.parser import parse_path
-from svgpathtools.svg2paths import polyline2pathd
+from svgpathtools.svg_to_paths import polyline2pathd
 
 
 def svg_file2paths(svg_file,
